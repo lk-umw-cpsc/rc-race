@@ -148,15 +148,19 @@ public class ApplicationCanvas extends JPanel implements RigidBodyUpdateListener
      */
     @Override
     public void update(int id, float x, float y, float z) {
+        // Update the player location, and the z coordinate of the pickup
         playerLocation.x = x;
         playerLocation.y = y;
         playerLocation.z = z;
         pickupLocation.z = z;
 
+        // Move the pick up if the player is near it
+        // (use a loop so that the pickup doesn't spawn under the player)
         while (playerLocation.distanceFrom(pickupLocation) < PICKUP_RADIUS) {
             pickupLocation.x = rng.nextDouble() * roomWidth + roomXLowerBound;
             pickupLocation.y = rng.nextDouble() * roomLength + roomYLowerBound;
         }
+        // Redraw the canvas with the updated scene information
         repaint();
     }
 
