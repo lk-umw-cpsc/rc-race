@@ -118,7 +118,7 @@ public class ApplicationCanvas extends JPanel implements RigidBodyUpdateListener
     }
 
     /**
-     * Converst a 3d coordinate's Y coordinate to a screen coordinate
+     * Converts a 3d coordinate's Y coordinate to a screen coordinate
      * @param y the Y coordinate to translate
      * @return a translated Y coordinate
      */
