@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -31,6 +32,8 @@ public class ConfigureRoomDialog extends JDialog {
     public ConfigureRoomDialog(ApplicationFrame parent) {
         super(parent, "Configure Room");
         this.parent = parent;
+
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         // prevent parent from being interacted with while dialog is visible
         setModal(true);
 
