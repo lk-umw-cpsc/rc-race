@@ -15,6 +15,8 @@ import vector.Vector3D;
 
 public class ApplicationCanvas extends JPanel implements RigidBodyUpdateListener, MouseListener {
     
+    private static final boolean TEST_MODE = true;
+
     // the width and height of the canvas, in pixels
     private static final int CANVAS_WIDTH_HEIGHT = 600;
 
@@ -48,11 +50,13 @@ public class ApplicationCanvas extends JPanel implements RigidBodyUpdateListener
         // instantiate the Random object for random number generation
         rng = new Random();
 
-        addMouseListener(this);
-
-        // begin listening for updates from Motive
-        // CommandStreamManager streamManager = new CommandStreamManager();
-        // streamManager.addRigidBodyUpdateListener(this);
+        if (TEST_MODE) {
+            addMouseListener(this);
+        } else {
+            // begin listening for updates from Motive
+            CommandStreamManager streamManager = new CommandStreamManager();
+            streamManager.addRigidBodyUpdateListener(this);
+        }
     }
 
     // colors for the dots drawn to the screen
