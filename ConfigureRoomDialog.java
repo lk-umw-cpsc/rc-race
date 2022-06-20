@@ -4,26 +4,29 @@ import java.awt.event.ActionEvent;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 public class ConfigureRoomDialog extends JDialog {
 
+    /**
+     * Structure defining room configuration captured by a
+     * ConfigureRoomDialog
+     */
     public static class RoomConfiguration {
         double width;
         double length;
         double xLowerBound;
         double yLowerBound;
     }
+    private final ApplicationFrame parent;
 
-    private JTextField widthField;
-    private JTextField lengthField;
-    private JTextField xLowerBoundField;
-    private JTextField yLowerBoundField;
+    private final JTextField widthField;
+    private final JTextField lengthField;
+    private final JTextField xLowerBoundField;
+    private final JTextField yLowerBoundField;
 
-    private ApplicationFrame parent;
 
     public ConfigureRoomDialog(ApplicationFrame parent) {
         super(parent, "Configure Room");
@@ -99,40 +102,58 @@ public class ConfigureRoomDialog extends JDialog {
         pack();
     }
 
+    /**
+     * Method called when the user hits the "Update" button or
+     * pressed the Enter/Return key within the form's text fields.
+     * 
+     * If valid double values are entered into each input field,
+     * the parent ApplicationFrame's roomConfigured method is called,
+     * updating the frame's canvas with new room dimension information.
+     * @param event Event info from Swing (unused)
+     */
     private void formSubmitted(ActionEvent event) {
         RoomConfiguration config = new RoomConfiguration();
         try {
             config.width = Double.parseDouble(widthField.getText());
         } catch (NumberFormatException e) {
             widthField.requestFocus();
+            return;
         }
 
         try {
             config.length = Double.parseDouble(lengthField.getText());
         } catch (NumberFormatException e) {
             lengthField.requestFocus();
+            return;
         }
 
         try {
             config.xLowerBound = Double.parseDouble(xLowerBoundField.getText());
         } catch (NumberFormatException e) {
             xLowerBoundField.requestFocus();
+            return;
         }
 
         try {
             config.yLowerBound = Double.parseDouble(yLowerBoundField.getText());
         } catch (NumberFormatException e) {
             yLowerBoundField.requestFocus();
+            return;
         }
 
+        // destroy the frame so that Swing will free up its resources
         dispose();
+        // notify parent of successful form submission
         parent.roomConfigured(config);
     }
 
-    public RoomConfiguration prompt() {
+    /**
+     * Centers this dialog in front of its parent, then makes this
+     * dialog visible.
+     */
+    public void prompt() {
         setLocationRelativeTo(getParent());
         setVisible(true);
-        return null;
     }
     
 }

@@ -1,7 +1,8 @@
 package vector;
 
-import java.awt.Point;
-
+/**
+ * This class represents a three-dimensional vector, with x, y and z components.
+ */
 public class Vector3D {
     public double x, y, z;
 
@@ -11,6 +12,11 @@ public class Vector3D {
         this.z = z;
     }
 
+    /**
+     * Calculates the pathagorean distance between two 3D vectors
+     * @param v the vector to calculate with
+     * @return the magnitude of the distance between this vector and v
+     */
     public double distanceFrom(Vector3D v) {
         double dx = v.x - x;
         double dy = v.y - y;
