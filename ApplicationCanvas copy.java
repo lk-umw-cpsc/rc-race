@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 
 import motive.CommandStreamManager;
 import motive.RigidBodyUpdateListener;
-import vector.Vector3D;
+import vector.Vector2D;
 
 public class ApplicationCanvas extends JPanel implements RigidBodyUpdateListener, MouseListener {
     
@@ -36,8 +36,8 @@ public class ApplicationCanvas extends JPanel implements RigidBodyUpdateListener
     private double roomWidth = ROOM_WIDTH;
     private double roomLength = ROOM_LENGTH;
 
-    private Vector3D playerLocation;
-    private Vector3D pickupLocation;
+    private Vector2D playerLocation;
+    private Vector2D pickupLocation;
 
     private final Random rng;
 
@@ -45,8 +45,8 @@ public class ApplicationCanvas extends JPanel implements RigidBodyUpdateListener
         // set size of the canvas
         setPreferredSize(new Dimension(CANVAS_WIDTH_HEIGHT, CANVAS_WIDTH_HEIGHT));
         // start player and pick up at specific coordinates (for testing purposes)
-        playerLocation = new Vector3D(2.0, 5, 0);
-        pickupLocation = new Vector3D(0, -5, 0);
+        playerLocation = new Vector2D(2.0, 5);
+        pickupLocation = new Vector2D(0, -5);
         // instantiate the Random object for random number generation
         rng = new Random();
 
@@ -101,7 +101,7 @@ public class ApplicationCanvas extends JPanel implements RigidBodyUpdateListener
      * @param radius The radius of the point to draw
      * @param color The color to draw the point in
      */
-    private void drawVectorPoint(Graphics g, Vector3D v, int radius, Color color) {
+    private void drawVectorPoint(Graphics g, Vector2D v, int radius, Color color) {
         int x = coordinate3dToScreenCoordinateX(v.x);
         int y = coordinate3dToScreenCoordinateY(v.y);
         x -= radius + 1;
@@ -155,8 +155,6 @@ public class ApplicationCanvas extends JPanel implements RigidBodyUpdateListener
         // Update the player location, and the z coordinate of the pickup
         playerLocation.x = x;
         playerLocation.y = y;
-        playerLocation.z = z;
-        pickupLocation.z = z;
 
         // Move the pick up if the player is near it
         // (use a loop so that the pickup doesn't spawn under the player)
