@@ -21,15 +21,15 @@ public class ApplicationCanvas extends JPanel implements RigidBodyUpdateListener
     private static final int CANVAS_WIDTH_HEIGHT = 600;
 
     // the default room lower X and Y limit
-    private static final double ROOM_X_LOWER_LIMIT = -6.0;
-    private static final double ROOM_Y_LOWER_LIMIT = -6.0;
+    private static final double ROOM_X_LOWER_LIMIT = -1.0;
+    private static final double ROOM_Y_LOWER_LIMIT = -1.0;
 
     // the default room length and width
-    private static final double ROOM_LENGTH = 12.0;
-    private static final double ROOM_WIDTH = 12.0;
+    private static final double ROOM_LENGTH = 2.0;
+    private static final double ROOM_WIDTH = 2.0;
 
     // the maximum distance before we consider the player having reached the pickup
-    private static final double PICKUP_RADIUS = 0.5;
+    private static final double PICKUP_RADIUS = 0.2;
 
     private double roomXLowerBound = ROOM_X_LOWER_LIMIT;
     private double roomYLowerBound = ROOM_Y_LOWER_LIMIT;
@@ -45,8 +45,8 @@ public class ApplicationCanvas extends JPanel implements RigidBodyUpdateListener
         // set size of the canvas
         setPreferredSize(new Dimension(CANVAS_WIDTH_HEIGHT, CANVAS_WIDTH_HEIGHT));
         // start player and pick up at specific coordinates (for testing purposes)
-        playerLocation = new Vector2D(2.0, 5);
-        pickupLocation = new Vector2D(0, -5);
+        playerLocation = new Vector2D(0.75, 0.75);
+        pickupLocation = new Vector2D(-0.75, -0.75);
         // instantiate the Random object for random number generation
         rng = new Random();
 
