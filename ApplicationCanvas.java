@@ -15,7 +15,7 @@ import vector.Vector2D;
 
 public class ApplicationCanvas extends JPanel implements RigidBodyUpdateListener, MouseListener {
     
-    private static final boolean TEST_MODE = true;
+    private static final boolean TEST_MODE = false;
 
     // the width and height of the canvas, in pixels
     private static final int CANVAS_WIDTH_HEIGHT = 600;
@@ -56,6 +56,7 @@ public class ApplicationCanvas extends JPanel implements RigidBodyUpdateListener
             // begin listening for updates from Motive
             CommandStreamManager streamManager = new CommandStreamManager();
             streamManager.addRigidBodyUpdateListener(this);
+            new Thread(streamManager).start();
         }
     }
 

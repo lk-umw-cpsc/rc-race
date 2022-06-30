@@ -126,14 +126,17 @@ public class CommandStreamManager implements Runnable {
      * It also updates the stream manager's rigid body listeners
      * (This is what drives the animation of the panel)
      
-     * Note: this method works with Motive version 2.3.1
+     * Note: this method works with Motive version 2.1.1
 
      * @param buffer a ByteBuffer passed by run()
      */
-    private void handleFrameDataV2_3_1(ByteBuffer buffer) {
+    private void handleFrameDataV2_1_1(ByteBuffer buffer) {
         short bufferSize = buffer.getShort();
+        // dumpBuffer(buffer.array(), bufferSize);
         int frameNumber = buffer.getInt();
         final int markerSetCount = buffer.getInt();
+        // System.out.printf("buffer size: %d\nframe no: %d\nmarket set count: %d\n",
+        //         bufferSize, frameNumber, markerSetCount);
         // List<String> modelNames = new ArrayList<>();
         for (int markerSet = 0; markerSet < markerSetCount; markerSet++) {
             byte c = 1;
@@ -156,6 +159,7 @@ public class CommandStreamManager implements Runnable {
             }
         }
         final int unlabeledMarkerCount = buffer.getInt();
+        // System.out.printf("ulmarker count: %d\n", unlabeledMarkerCount);
         for (int marker = 0; marker < unlabeledMarkerCount; marker++) {
             float x = buffer.getFloat();
             float y = buffer.getFloat();
@@ -163,6 +167,7 @@ public class CommandStreamManager implements Runnable {
         }
 
         final int rigidBodyCount = buffer.getInt();
+        // System.out.printf("RB count: %d\n", rigidBodyCount);
         for (int body = 0; body < rigidBodyCount; body++) {
             // id (this will come into play when we have multiple bodies)
             int bodyID = buffer.getInt();
@@ -182,6 +187,13 @@ public class CommandStreamManager implements Runnable {
             quaternions[2] = buffer.getFloat();
             quaternions[3] = buffer.getFloat();
 
+            // System.out.printf("rb id %d: %.2f, %.2f, %.2f ... %.2f, %.2f, %.2f, %.2f\n",
+            //         bodyID, x, y, z, quaternions[0], quaternions[1], quaternions[2], quaternions[3]);
+
+            // get rid of junk in the way
+            buffer.getFloat();
+            buffer.getShort();
+
             // determine what direction the body is facing based on the quaternions
             // this is strictly the rotation along the Z axis
             // thanks to https://automaticaddison.com/how-to-convert-a-quaternion-to-a-rotation-matrix/
@@ -195,12 +207,13 @@ public class CommandStreamManager implements Runnable {
             // forwardX /= distance;
             // forwardY /= distance;
             
-            final int rbMarkerCount = buffer.getInt();
+            /*final int rbMarkerCount = buffer.getInt();
             for (int rbMarker = 0; rbMarker < rbMarkerCount; rbMarker++) {
                 float markerX = buffer.getFloat();
                 float markerY = buffer.getFloat();
                 float markerZ = buffer.getFloat();
             }
+            System.out.printf("rbMarkerCount: %d\n", rbMarkerCount);
             
             for (int rbMarker = 0; rbMarker < rbMarkerCount; rbMarker++) {
                 int markerID = buffer.getInt();
@@ -208,9 +221,10 @@ public class CommandStreamManager implements Runnable {
 
             for (int rbMarker = 0; rbMarker < rbMarkerCount; rbMarker++) {
                 float markerSize = buffer.getFloat();
-            }
+                System.out.printf("Marker size: %.2f\n");
+            }*/
 
-            float markerError = buffer.getFloat();
+            // float markerError = buffer.getFloat();
         }
         // below is NOT WORKING... but may not be needed ;)
         // int skeletonCount = buffer.getInt();
@@ -495,10 +509,10 @@ public class CommandStreamManager implements Runnable {
                         break;
                     case MESSAGE_FRAME_OF_DATA:
                         // This case occurs roughly 60-120 times/second
-                        
+
                         // Method call breaks down the packet into useful data
                         // and updates the manager's listeners with this new data 
-                        handleFrameDataV2_3_1(wrapper);
+                        handleFrameDataV2_1_1(wrapper);
                         break;
                     default:
                         // do nothing; we don't care about other messages
@@ -509,6 +523,19 @@ public class CommandStreamManager implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void dumpBuffer(final byte[] array, final int messageLength) {
+        for (int i = 0; i < messageLength; i++) {
+            System.out.printf("%02X ", array[i]);
+            if (i % 0x10 == 0xF) {
+                System.out.println();
+            }
+        }
+        if (messageLength % 0x10 != 0) {
+            System.out.println();
+        }
+        System.out.println("- - - - - - - - - - - - - - - - - - - -");
     }
     
 }
